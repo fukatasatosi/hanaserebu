@@ -9,22 +9,44 @@ import org.json.JSONObject;
 
 public class hanaserebu {
     private static final String API_KEY = "AIzaSyClEis8qc3GR4vzGh_QUL0WeiTMlUnYjQQ";
-    private static final String ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + API_KEY;
+    private static final String ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
+            + API_KEY;
     private static final String POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/pikachu";
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("終了するには 'exit' と入力");
         while (true) {
-            System.out.print("あなた: ");
-            String userInput = scanner.nextLine();
+            // 入力保存クラスで入力を取得しファイル保存
+            String userInput = getUserInputAndSave();
             if (userInput.equalsIgnoreCase("exit")) {
                 System.out.println("チャットを終了します。");
                 break;
             }
-            String response = getGeminiResponse(userInput);
+            // 天気情報を取得
+            String weatherInfo = 天気情報取得();
+            // Geminiへの入力に天気情報を付加
+            String response = getGeminiResponse(weatherInfo + "\n" + userInput);
             System.out.println("ボット: " + response);
         }
-        scanner.close();
+    }
+
+    // 入力保存クラスを使って入力を取得しファイル保存
+    private static String getUserInputAndSave() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("あなた: ");
+        String userInput = scanner.nextLine();
+        入力保存.saveInput(userInput);
+        return userInput;
+    }
+
+    // 天気.javaのmain相当の情報を取得して文字列で返す
+    private static String 天気情報取得() {
+        try {
+            // 天気クラスのmain処理を呼び出す代わりに、天気情報を取得する静的メソッドを呼ぶ想定
+            return 天気.getWeatherSummary();
+        } catch (Exception e) {
+            return "天気情報取得エラー: " + e.getMessage();
+        }
     }
 
     private static String getGeminiResponse(String userInput) {
@@ -36,7 +58,8 @@ public class hanaserebu {
             conn.setDoOutput(true);
 
             String jsonInput = "{" +
-                "\"contents\": [{\"parts\": [{\"text\": \""+"Please Answer the following sentence as if you are "+ POKEMON_URL +" "+ escapeJson(userInput) + "\"}]}]}";
+                    "\"contents\": [{\"parts\": [{\"text\": \"" + "Please Answer the following sentence as if you are "
+                    + POKEMON_URL + " " + escapeJson(userInput) + "\"}]}]}";
 
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInput.getBytes("utf-8");
@@ -44,7 +67,7 @@ public class hanaserebu {
             }
 
             int code = conn.getResponseCode();
-            if( code != 200) {
+            if (code != 200) {
                 return "エラー: " + code + " - " + conn.getResponseMessage();
             }
             InputStream is = (code == 200) ? conn.getInputStream() : conn.getErrorStream();
@@ -66,12 +89,15 @@ public class hanaserebu {
         try {
             JSONObject obj = new JSONObject(json);
             JSONArray candidates = obj.getJSONArray("candidates");
-            if (candidates.length() == 0) return "返答が取得できませんでした。(candidatesなし)";
+            if (candidates.length() == 0)
+                return "返答が取得できませんでした。(candidatesなし)";
             JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
             JSONArray parts = content.getJSONArray("parts");
-            if (parts.length() == 0) return "返答が取得できませんでした。(partsなし)";
+            if (parts.length() == 0)
+                return "返答が取得できませんでした。(partsなし)";
             JSONObject part = parts.getJSONObject(0);
-            if (!part.has("text")) return "返答が取得できませんでした。(textなし)";
+            if (!part.has("text"))
+                return "返答が取得できませんでした。(textなし)";
             return part.getString("text");
         } catch (Exception e) {
             return "返答が取得できませんでした。(JSONパースエラー): " + e.getMessage();

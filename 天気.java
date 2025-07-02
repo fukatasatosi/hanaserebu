@@ -8,7 +8,8 @@ import org.json.JSONObject; // JSONパース用
 
 public class 天気 {
     // 緯度・経度は例: 東京駅 (lat=35.6812, lon=139.7671)
-    public static void main(String[] args) {
+    // hanaserebu.javaから呼び出せる天気要約取得メソッド
+    public static String getWeatherSummary() {
         double lat = 35.6812; // 緯度
         double lon = 139.7671; // 経度
         try {
@@ -20,8 +21,7 @@ public class 天気 {
             conn.setRequestMethod("GET"); // GETメソッド指定
             int code = conn.getResponseCode(); // レスポンスコード取得
             if (code != 200) {
-                System.out.println("APIエラー: " + code); // エラー時の出力
-                return;
+                return "APIエラー: " + code;
             }
             // レスポンスを読み込む
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -38,12 +38,10 @@ public class 天気 {
             int weatherCode = current.getInt("weathercode"); // 天気コード取得
             String weather = getWeatherDescription(weatherCode); // 天気コードから説明文取得
             String advice = getClothesAdvice(temp, weatherCode); // 気温と天気から服装アドバイス取得
-            // 結果を出力
-            System.out.println("今日の天気: " + weather);
-            System.out.println("気温: " + temp + "℃");
-            System.out.println("服装アドバイス: " + advice);
+            // 1行でまとめて返す
+            return "今日の天気: " + weather + "\n気温: " + temp + "℃\n服装アドバイス: " + advice;
         } catch (Exception e) {
-            System.out.println("エラー: " + e.getMessage()); // 例外発生時の出力
+            return "天気情報取得エラー: " + e.getMessage();
         }
     }
 
