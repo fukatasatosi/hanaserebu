@@ -1,0 +1,17 @@
+マニュアル
+概要
+猫画像.java は、The Cat API からランダムな猫の画像を取得し、ウィンドウに表示するJavaプログラムです。GUIにはSwingを使用しています。
+
+必要な環境
+Java 11 以上（HttpClient APIを使用するため）
+インターネット接続
+
+動作
+
+プログラムを実行すると「猫画像ビューア」というウィンドウが開き、ランダムな猫の画像が表示されます。
+
+
+The Cat API（https://api.thecatapi.com/v1/images/search）からランダムな猫画像のURLを取得。
+取得したJSONから画像URLを抽出（正規表現で "url" の値を取得）。
+URLから画像をダウンロードし、Swingの JLabel に表示。
+例外発生時はダイアログでエラー表示。
