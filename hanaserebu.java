@@ -36,7 +36,7 @@ public class hanaserebu {
             conn.setDoOutput(true);
 
             String jsonInput = "{" +
-                "\"contents\": [{\"parts\": [{\"text\": \""+"Please Answer the following sentence as if you are "+POKEMON_URL +""+ escapeJson(userInput) + "\"}]}]}";
+                "\"contents\": [{\"parts\": [{\"text\": \""+"Please Answer the following sentence as if you are "+POKEMON_URL +" "+ escapeJson(userInput) + "\"}]}]}";
 
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInput.getBytes("utf-8");
