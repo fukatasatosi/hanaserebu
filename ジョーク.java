@@ -100,4 +100,32 @@ public class ジョーク {
         }
         return sb.toString();
     }
+
+    // hanaserebu.javaから呼び出せる日本語ジョーク取得メソッド
+    public static String getJokeInJapanese() {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://official-joke-api.appspot.com/jokes/random"))
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String body = response.body();
+            // JSONからsetupとpunchlineを抽出
+            Pattern setupPattern = Pattern.compile("\\\"setup\\\":\\\"(.*?)\\\"");
+            Pattern punchlinePattern = Pattern.compile("\\\"punchline\\\":\\\"(.*?)\\\"");
+            Matcher setupMatcher = setupPattern.matcher(body);
+            Matcher punchlineMatcher = punchlinePattern.matcher(body);
+            String setup = setupMatcher.find() ? setupMatcher.group(1) : "";
+            String punchline = punchlineMatcher.find() ? punchlineMatcher.group(1) : "";
+            if (setup.isEmpty() && punchline.isEmpty()) {
+                return "ジョークの取得に失敗しました";
+            } else {
+                String jpSetup = translateToJapanese(setup);
+                String jpPunchline = translateToJapanese(punchline);
+                return jpSetup + "\n" + jpPunchline;
+            }
+        } catch (Exception ex) {
+            return "エラー: " + ex.getMessage();
+        }
+    }
 }

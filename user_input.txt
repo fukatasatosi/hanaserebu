@@ -1,2 +1,1 @@
-what weather today
-
+exit
