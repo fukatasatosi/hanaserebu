@@ -24,9 +24,15 @@ public class hanaserebu {
             }
             // 天気情報を取得
             String weatherInfo = 天気情報取得();
-            // Geminiへの入力に天気情報を付加
+            // ジョーク情報を取得
+            String jokeInfo = null;
+            // Geminiへの入力に天気情報やジョークを付加
             if(userInput.contains("天気") || userInput.contains("weather") || userInput.contains("天候") || userInput.contains("気象")) {
                 userInput += "\n" + "you can refer to the following information: " + weatherInfo;
+            }
+            if(userInput.contains("joke")) {
+                jokeInfo = ジョーク.getJokeInJapanese();
+                userInput += "\nyou can refer to the following information " + jokeInfo;
             }
             String response = getGeminiResponse(userInput);
             System.out.println("ピカチュウ: " + response);
