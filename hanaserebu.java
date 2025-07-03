@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,15 +28,18 @@ public class hanaserebu {
             // ジョーク情報を取得
             String jokeInfo = null;
             // Geminiへの入力に天気情報やジョークを付加
-            if(userInput.contains("天気") || userInput.contains("weather") || userInput.contains("天候") || userInput.contains("気象")) {
+            if (userInput.contains("天気") || userInput.contains("weather") || userInput.contains("天候")
+                    || userInput.contains("気象")) {
                 userInput += "\n" + "you can refer to the following information: " + weatherInfo;
             }
-            if(userInput.contains("joke")) {
+            if (userInput.contains("joke")) {
                 jokeInfo = ジョーク.getJokeInJapanese();
                 userInput += "\nyou can refer to the following information " + jokeInfo;
             }
             String response = getGeminiResponse(userInput);
-            System.out.println("ピカチュウ: " + response);
+            // DeepLで日本語翻訳
+            String translated = deeplTranslate(response);
+            System.out.println("ピカチュウ: " + translated);
         }
     }
 
@@ -45,7 +49,44 @@ public class hanaserebu {
         System.out.print("あなた: ");
         String userInput = scanner.nextLine();
         入力保存.saveInput(userInput);
+        // scannerはここで閉じない（ループで使うため）
+        // ただし、mainのループ終了時にscanner.close()を追加推奨
         return userInput;
+    }
+
+    // DeepL APIで英語→日本語翻訳
+    private static String deeplTranslate(String text) {
+        try {
+            String apiKey = "411f01e6-b599-41a4-8b55-470533b79a93:fx"; // ←ここにDeepLのAPIキーを入力
+            String urlStr = "https://api-free.deepl.com/v2/translate";
+            URL url = new URL(urlStr);
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);
+            conn.setDoOutput(true);
+            String params = "text=" + java.net.URLEncoder.encode(text, "UTF-8") + "&target_lang=JA";
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(params.getBytes("UTF-8"));
+            }
+            int code = conn.getResponseCode();
+            if (code != 200) {
+                return "DeepL APIエラー: " + code;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null)
+                sb.append(line);
+            br.close();
+            conn.disconnect();
+            JSONObject obj = new JSONObject(sb.toString());
+            if (!obj.has("translations"))
+                return "DeepL翻訳失敗";
+            return obj.getJSONArray("translations").getJSONObject(0).getString("text");
+        } catch (Exception e) {
+            return "DeepL翻訳エラー: " + e.getMessage();
+        }
     }
 
     // 天気.javaのmain相当の情報を取得して文字列で返す
