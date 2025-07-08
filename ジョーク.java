@@ -5,6 +5,7 @@ import java.net.http.HttpResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// ジョーク取得・翻訳アプリ本体クラス
 public class ジョーク {
     public static class Joke {
         public final String setup;
@@ -17,6 +18,7 @@ public class ジョーク {
 
     // ジョークAPIから英語のジョークを取得
     public static Joke getJoke() {
+
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
