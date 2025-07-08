@@ -8,7 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.nio.charset.StandardCharsets;
 
+// ジョーク取得・翻訳アプリ本体クラス
 public class ジョーク {
+    // メイン処理: ジョーク取得・翻訳UIを表示
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("ランダムジョーク");
@@ -58,16 +60,19 @@ public class ジョーク {
     }
 
     // LibreTranslate APIで英語→日本語翻訳
+    // LibreTranslate APIで英語→日本語翻訳
     private static String translateToJapanese(String text) {
         try {
-            String json = String.format("{\"q\":\"%s\",\"source\":\"en\",\"target\":\"ja\"}", text.replace("\"", "\\\""));
+            String json = String.format("{\"q\":\"%s\",\"source\":\"en\",\"target\":\"ja\"}",
+                    text.replace("\"", "\\\""));
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://libretranslate.de/translate"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
                     .build();
             HttpClient client = HttpClient.newHttpClient();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            HttpResponse<String> response = client.send(request,
+                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             String body = response.body();
             Pattern pattern = Pattern.compile("\\\"translatedText\\\":\\\"(.*?)\\\"");
             Matcher matcher = pattern.matcher(body);
@@ -83,6 +88,7 @@ public class ジョーク {
         }
     }
 
+    // Unicodeエスケープ(uXXXX)をデコード
     // Unicodeエスケープ(uXXXX)をデコード
     private static String decodeUnicode(String str) {
         StringBuilder sb = new StringBuilder();
@@ -101,6 +107,7 @@ public class ジョーク {
         return sb.toString();
     }
 
+    // hanaserebu.javaから呼び出せる日本語ジョーク取得メソッド
     // hanaserebu.javaから呼び出せる日本語ジョーク取得メソッド
     public static String getJokeInJapanese() {
         try {

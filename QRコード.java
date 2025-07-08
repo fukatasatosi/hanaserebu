@@ -6,7 +6,9 @@ import java.net.URLEncoder;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
+// QRコード生成アプリ本体クラス
 public class QRコード {
+    // メイン処理: SwingでQRコード生成UIを表示
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("QRコード生成");
@@ -24,6 +26,7 @@ public class QRコード {
             JLabel qrLabel = new JLabel();
             frame.add(qrLabel, BorderLayout.CENTER);
 
+            // QR生成ボタン押下時の処理
             generateButton.addActionListener(e -> {
                 String inputUrl = urlField.getText();
                 if (inputUrl.isEmpty()) {
@@ -34,7 +37,8 @@ public class QRコード {
                     String encoded = URLEncoder.encode(inputUrl, "UTF-8");
                     String apiUrl = "https://api.qrserver.com/v1/create-qr-code/?data=" + encoded;
                     BufferedImage img = ImageIO.read(new URL(apiUrl));
-                    if (img == null) throw new Exception("QRコード画像の取得に失敗しました");
+                    if (img == null)
+                        throw new Exception("QRコード画像の取得に失敗しました");
                     qrLabel.setIcon(new ImageIcon(img));
                     frame.pack();
                 } catch (UnsupportedEncodingException ex) {
