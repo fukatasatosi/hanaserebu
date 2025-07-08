@@ -32,9 +32,10 @@ public class hanaserebu {
                     || userInput.contains("気象")) {
                 userInput += "\n" + "you can refer to the following information: " + weatherInfo;
             }
-            if (userInput.contains("joke")) {
-                jokeInfo = ジョーク.getJokeInJapanese();
-                userInput += "\nyou can refer to the following information " + jokeInfo;
+            if (userInput.contains("joke") || userInput.contains("ジョーク")) {
+                ジョーク.Joke joke = ジョーク.getJoke();
+                jokeInfo = joke.setup + "\n" + joke.punchline;
+                userInput += "\nJoke: " + jokeInfo;
             }
             String response = getGeminiResponse(userInput);
             // DeepLで日本語翻訳
