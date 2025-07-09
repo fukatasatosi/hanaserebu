@@ -1,10 +1,13 @@
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import javax.swing.*;
+import java.awt.*;
 
 public class ポケモン図鑑 {
     // メイン処理: ポケモン名を入力し、APIから情報を取得して表示
@@ -97,6 +100,9 @@ public class ポケモン図鑑 {
             } else {
                 locStr.append("（取得失敗）");
             }
+            // 画像URL取得
+            String imageUrl = poke.getJSONObject("sprites").getString("front_default");
+
             // 結果表示
             System.out.println("--- ポケモン情報 ---");
             System.out.println("名前: " + name);
@@ -107,6 +113,32 @@ public class ポケモン図鑑 {
             System.out.println("身長: " + height + " m");
             System.out.println("体重: " + weight + " kg");
             System.out.println("遭遇場所: " + locStr);
+            System.out.println("画像URL: " + imageUrl);
+
+            // Swingで画像表示
+            if (imageUrl != null && !imageUrl.equals("null")) {
+                try {
+                    URL imgUrl = new URL(imageUrl);
+                    ImageIcon icon = new ImageIcon(imgUrl);
+                    JFrame frame = new JFrame("ポケモン画像: " + name);
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    JLabel label = new JLabel(icon);
+                    frame.getContentPane().add(label, BorderLayout.CENTER);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                } catch (Exception ex) {
+                    System.out.println("画像の表示に失敗: " + ex.getMessage());
+                }
+            }
+
+            // 覚えることができる技一覧
+            System.out.println("\n--- 覚えることができる技一覧 ---");
+            for (int i = 0; i < moves.length(); i++) {
+                JSONObject moveObj = moves.getJSONObject(i);
+                String moveName = moveObj.getJSONObject("move").getString("name");
+                System.out.println(moveName);
+            }
         } catch (Exception e) {
             System.out.println("エラー: " + e.getMessage());
         }
