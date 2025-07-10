@@ -8,7 +8,9 @@ import java.net.http.HttpResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// 猫画像表示アプリ本体クラス
 public class 猫画像 {
+    // メイン処理: The Cat APIから猫画像を取得しSwingで表示
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("猫画像ビューア２");

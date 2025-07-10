@@ -6,6 +6,7 @@ import java.util.Scanner;
 import org.json.JSONObject;
 
 public class OpenMeteoClothingAdvice {
+    // メイン処理: Open-Meteo APIで天気・気温を取得し服装アドバイスを表示
     public static void main(String[] args) {
         try {
             Scanner scanner = new Scanner(System.in);
@@ -39,6 +40,7 @@ public class OpenMeteoClothingAdvice {
         }
     }
 
+    // 天気コードから天気説明文を返す関数
     private static String getWeatherDescription(int code) {
         switch (code) {
             case 0:
@@ -84,6 +86,7 @@ public class OpenMeteoClothingAdvice {
         }
     }
 
+    // 気温・天気から服装アドバイスを返す関数
     private static String getClothingAdvice(double tmax, double tmin, String weather) {
         if (tmax >= 30)
             return "今日はとても暑いので、半袖や短パンなど涼しい服装で！";

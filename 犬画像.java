@@ -10,7 +10,9 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
+// 犬画像表示アプリ本体クラス
 public class 犬画像 {
+    // メイン処理: Dog CEO APIから犬画像を取得しSwingで表示
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("犬画像ビューア");
@@ -34,7 +36,8 @@ public class 犬画像 {
                 }
                 URL url = URI.create(imageUrl).toURL();
                 BufferedImage img = ImageIO.read(url);
-                if (img == null) throw new Exception("画像の読み込みに失敗しました");
+                if (img == null)
+                    throw new Exception("画像の読み込みに失敗しました");
                 ImageIcon icon = new ImageIcon(img);
                 JLabel label = new JLabel(icon);
                 frame.getContentPane().add(label, BorderLayout.CENTER);
