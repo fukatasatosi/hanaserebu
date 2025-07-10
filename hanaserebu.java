@@ -27,15 +27,21 @@ public class hanaserebu {
             String weatherInfo = 天気情報取得();
             // ジョーク情報を取得
             String jokeInfo = null;
-            // Geminiへの入力に天気情報やジョークを付加
+            // アドバイス情報を取得
+            String adviceInfo = null;
+            // Geminiへの入力に天気情報やジョークやアドバイスを付加
             if (userInput.contains("天気") || userInput.contains("weather") || userInput.contains("天候")
                     || userInput.contains("気象")) {
                 userInput += "\n" + "you can refer to the following information: " + weatherInfo;
             }
             if (userInput.contains("joke") || userInput.contains("ジョーク")) {
-                ジョーク.Joke joke = ジョーク.getJoke();
+                ジョーク.Joke joke = ジョーク.getRandomJoke();
                 jokeInfo = joke.setup + "\n" + joke.punchline;
-                userInput += "\nJoke: " + jokeInfo;
+                userInput += "\nexplain in japanese this Joke: " + jokeInfo;
+            }
+            if (userInput.contains("advice") || userInput.contains("アドバイス")) {
+                adviceInfo = Advice.getAdvice();
+                userInput += "\nexplain in japanese this Advice: " + adviceInfo;
             }
             String response = getGeminiResponse(userInput);
             // DeepLで日本語翻訳
