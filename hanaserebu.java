@@ -29,7 +29,11 @@ public class hanaserebu {
             String jokeInfo = null;
             // アドバイス情報を取得
             String adviceInfo = null;
-            // Geminiへの入力に天気情報やジョークやアドバイスを付加
+            // バズワード情報を取得
+            String buzzInfo = null;
+            // 退屈アクティビティ情報を取得
+            String boredInfo = null;
+            // Geminiへの入力に天気情報やジョークやアドバイスやバズワードや退屈アクティビティを付加
             if (userInput.contains("天気") || userInput.contains("weather") || userInput.contains("天候")
                     || userInput.contains("気象")) {
                 userInput += "\n" + "you can refer to the following information: " + weatherInfo;
@@ -42,6 +46,14 @@ public class hanaserebu {
             if (userInput.contains("advice") || userInput.contains("アドバイス")) {
                 adviceInfo = Advice.getAdvice();
                 userInput += "\nexplain in japanese this Advice: " + adviceInfo;
+            }
+            if (userInput.contains("buzz") || userInput.contains("バズ")) {
+                buzzInfo = Buzz.getBuzz();
+                userInput += "\nexplain in japanese this Buzzword: " + buzzInfo;
+            }
+            if (userInput.contains("bored") || userInput.contains("退屈")) {
+                boredInfo = Bored.getBored();
+                userInput += "\nexplain in japanese this Activity: " + boredInfo;
             }
             String response = getGeminiResponse(userInput);
             // DeepLで日本語翻訳
