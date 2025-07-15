@@ -1,0 +1,47 @@
+## 概要
+
+`楽天レシピ.java` は 楽天レシピAPI を利用して、レシピ検索やレシピ情報取得ができるJavaプログラムです。
+
+---
+
+## 使っているAPI
+
+- **楽天レシピAPI**
+    - https://webservice.rakuten.co.jp/api/recipe/
+
+---
+
+## 主な関数の解説
+
+- `main`
+  - 検索キーワードや条件を指定してAPIリクエストを送信します。
+
+- `searchRecipe(String keyword)`
+  - 楽天レシピAPIにGETリクエストを送り、レシピ情報を取得・表示します。
+  - org.jsonライブラリでJSONレスポンスをパースします。
+
+---
+
+## 必要なライブラリ
+
+- `org.json`（JSONパース用）
+  - [Maven Central](https://mvnrepository.com/artifact/org.json/json) などから `json-*.jar` をダウンロードし、
+    コンパイル・実行時にクラスパスへ追加してください。
+
+---
+
+## 実行方法（例）
+
+1. `json-20230618.jar` などを同じフォルダに配置
+2. 以下のコマンドでコンパイル・実行
+
+   ```powershell
+   javac -cp .;json-20230618.jar 楽天レシピ.java
+   java -cp .;json-20230618.jar 楽天レシピ
+   ```
+
+---
+
+## 注意事項
+- 楽天APIの利用にはアプリID（APIキー）が必要です。
+- 利用には楽天デベロッパー規約等に従ってください。

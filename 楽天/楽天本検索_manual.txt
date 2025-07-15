@@ -1,0 +1,47 @@
+## 概要
+
+`楽天本検索.java` は 楽天ブックスAPI を利用して、書籍情報を検索・取得できるJavaプログラムです。
+
+---
+
+## 使っているAPI
+
+- **楽天ブックスAPI**
+    - https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404
+
+---
+
+## 主な関数の解説
+
+- `main`
+  - 検索キーワードや条件を指定してAPIリクエストを送信します。
+
+- `searchBooks(String keyword)`
+  - 楽天ブックスAPIにGETリクエストを送り、書籍情報を取得・表示します。
+  - org.jsonライブラリでJSONレスポンスをパースします。
+
+---
+
+## 必要なライブラリ
+
+- `org.json`（JSONパース用）
+  - [Maven Central](https://mvnrepository.com/artifact/org.json/json) などから `json-*.jar` をダウンロードし、
+    コンパイル・実行時にクラスパスへ追加してください。
+
+---
+
+## 実行方法（例）
+
+1. `json-20230618.jar` などを同じフォルダに配置
+2. 以下のコマンドでコンパイル・実行
+
+   ```powershell
+   javac -cp .;json-20230618.jar 楽天本検索.java
+   java -cp .;json-20230618.jar 楽天本検索
+   ```
+
+---
+
+## 注意事項
+- 楽天APIの利用にはアプリID（APIキー）が必要です。
+- 利用には楽天デベロッパー規約等に従ってください。
