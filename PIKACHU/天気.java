@@ -1,3 +1,4 @@
+package PIKACHU;
 
 // 必要なライブラリのインポート
 import java.io.BufferedReader; // APIレスポンスの読み取り用

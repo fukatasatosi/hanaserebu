@@ -1,4 +1,4 @@
-package a;
+package URL使用;
 
 import java.util.Scanner;
 
