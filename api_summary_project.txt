@@ -1,0 +1,87 @@
+【hanaserebuプロジェクト内の全Javaファイルで使用しているWebAPIまとめ】
+
+■ hanaserebu.java, PIKACHU/hanaserebu.java
+- Google Gemini API
+  URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+  概要: Googleの生成AI(Gemini)にテキストを送信し、返答を取得するAPI。
+- PokeAPI
+  URL: https://pokeapi.co/api/v2/pokemon/pikachu
+  概要: ポケモン（ピカチュウ）の詳細データを取得するAPI。
+- DeepL API
+  URL: https://api-free.deepl.com/v2/translate
+  概要: テキストを多言語に翻訳するAPI。
+
+■ ジョーク.java, PIKACHU/ジョーク.java
+- Official Joke API
+  URL: https://official-joke-api.appspot.com/jokes/random
+  概要: ランダムな英語ジョークを取得するAPI。
+- icanhazdadjoke.com
+  URL: https://icanhazdadjoke.com/
+  概要: ダジャレ系ジョークを取得するAPI。
+- Chuck Norris Joke API
+  URL: https://api.chucknorris.io/jokes/random
+  概要: チャック・ノリスのジョークを取得するAPI。
+
+■ Advice.java
+- Advice Slip API
+  URL: https://api.adviceslip.com/advice
+  概要: ランダムなアドバイス文を取得するAPI。
+
+■ Buzz.java
+- Corporate BS Generator
+  URL: https://corporatebs-generator.sameerkumar.website/
+  概要: ビジネス用語のバズワードを生成するAPI。
+
+■ Bored.java
+- Bored API
+  URL: https://bored-api.appbrewery.com/random
+  概要: ランダムな暇つぶしアクティビティを提案するAPI。
+
+■ QRCodeFetcher.java, a/QRコード.java, URL使用/QRCodeFetcher.java
+- QRコード生成API
+  URL: https://api.qrserver.com/v1/create-qr-code/
+  概要: 入力した文字列やURLからQRコード画像を生成するAPI。
+
+■ NekoImageFetcher.java, a/猫画像.java, URL使用/NekoImageFetcher.java
+- The Cat API
+  URL: https://api.thecatapi.com/v1/images/search
+  概要: ランダムな猫画像のURLを返すAPI。
+
+■ InuImageFetcher.java, a/犬画像.java, URL使用/InuImageFetcher.java
+- Dog CEO API
+  URL: https://dog.ceo/api/breeds/image/random
+  概要: ランダムな犬画像のURLを返すAPI。
+
+■ 楽天本検索.java, 楽天商品.java, 楽天レシピ.java, 楽天トラベル.java, 楽天/楽天本検索.java, 楽天/楽天商品.java, 楽天/楽天レシピ.java, 楽天/楽天トラベル.java
+- 楽天WebサービスAPI
+  URL例: https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404
+  概要: 楽天の各種商品・書籍・レシピ・トラベル情報を検索・取得するAPI。
+
+■ SleepApi.java, PIKACHU/SleepApi.java
+- Oura Sleep API
+  URL: https://api.ouraring.com/v2/usercollection/sleep
+  概要: Oura Ringの睡眠データを取得するAPI。
+
+■ hello.java
+- HelloSalut API
+  URL: https://fourtonfish.com/hellosalut/?lang=kk
+  概要: 指定言語の「こんにちは」メッセージを返すAPI。
+
+■ 天気.java, PIKACHU/天気.java
+- Open-Meteo API
+  URL: https://api.open-meteo.com/v1/forecast
+  概要: 緯度・経度を指定して天気（気温・天候・風速など）の予報データを取得するAPI。
+
+■ 電卓.java
+- Rurihabachi Calculator API
+  URL: http://www.rurihabachi.com/web/webapi/calculator/json
+  概要: 数式を送信して計算結果を取得するAPI。
+
+■ その他
+- 入力保存.java など: WebAPI未使用
+
+---
+
+【備考】
+- 各APIの利用にはAPIキーや利用規約が必要な場合があります。
+- 詳細は各Javaファイルのコメントや公式ドキュメントを参照してください。
