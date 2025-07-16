@@ -1,4 +1,4 @@
-package URL使用;
+package 雑;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
