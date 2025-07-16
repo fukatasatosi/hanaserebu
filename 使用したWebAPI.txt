@@ -63,7 +63,7 @@
 - フォルダ: hanaserebu/楽天
 - 主な関数の説明: 楽天トラベルでホテルや宿泊施設を検索・取得します。
 
-■ URL使用/Main.java
+■ 雑/Main.java
 - API名: Dog CEO API, The Cat API, QRCode API
 - API URL: https://dog.ceo/api/breeds/image/random, 
            https://api.thecatapi.com/v1/images/search,   
@@ -74,6 +74,22 @@
   ・QRCodeFetcher.getQrCodeUrl(String data)：QRコード画像生成
 - フォルダ: hanaserebu/URL使用
 - 主な関数の説明: 犬・猫のランダム画像URLを取得したり、指定したデータからQRコード画像URLを生成します。
+
+■ 雑/CalculatorFetcher.java
+- API名: CalculatorFetcher API
+- API URL: http://www.rurihabachi.com/web/webapi/calculator/json?exp=
+- 主な関数: fetchCalcResult(String expr)
+　・fetchCalcResult(String expr)：数式（例：1+2*3）をAPIに送信し、計算結果を取得
+- フォルダ: hanaserebu/雑
+- 主な関数の説明: 入力された数式をWebAPIに送信し、計算結果（数値）を取得して返します。
+
+■ 雑/HelloFetcher.java
+- API名: HelloFetcher API
+- API URL: https://fourtonfish.com/hellosalut/?lang={lang}
+- 主な関数: fetchHello(String lang)
+　・fetchHello(String lang)：言語コード（例: ja, en, fr, kk）をAPIに送信し、挨拶文を取得
+- フォルダ: hanaserebu/雑
+- 主な関数の説明: 入力された言語コードをWebAPIに送信し、対応する言語の挨拶文（Hello, Bonjour, こんにちは等）を取得して返します。
 
 ■ PIKACHU/ポケモン図鑑.java
 - API名: PokeAPI
