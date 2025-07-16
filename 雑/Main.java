@@ -1,4 +1,4 @@
-package URL使用;
+package 雑;
 
 import java.util.Scanner;
 
