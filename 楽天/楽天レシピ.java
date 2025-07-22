@@ -7,6 +7,7 @@ import java.net.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Scanner;
+import java.net.URLEncoder;
 
 /**
  * 楽天レシピAPIを利用したレシピカテゴリ一覧表示アプリ
@@ -23,15 +24,12 @@ public class 楽天レシピ {
             // 楽天APIアプリIDを入力してください
             String appId = "1057854877760086255"; // ←ご自身の楽天アプリIDに変更
 
-            // カテゴリタイプ選択（main, side, dessert など）
-            System.out.print("カテゴリタイプを入力してください（main/side/dessert、省略可）: ");
+            // カテゴリタイプ選択（large, medium, small など）
+            System.out.print("カテゴリタイプを入力してください（large,medium,small  、省略可）: ");
             String categoryType = scanner.nextLine().trim();
             String url = String.format(
-                    "https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426?format=json&applicationId=%s",
-                    appId);
-            if (!categoryType.isEmpty()) {
-                url += "&categoryType=" + categoryType;
-            }
+                    "https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426?format=json&applicationId=%s&categoryType=%s",
+                    appId, URLEncoder.encode(categoryType, "UTF-8"));
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -41,7 +39,13 @@ public class 楽天レシピ {
                 return;
             }
             JSONObject root = new JSONObject(response.body());
-            JSONArray categories = root.optJSONArray("result");
+            JSONObject resultObj = root.optJSONObject("result");
+            if (resultObj == null) {
+                System.out.println("APIレスポンスにresultがありませんでした。");
+                return;
+            }
+            String typeKey = categoryType.isEmpty() ? "large" : categoryType;
+            JSONArray categories = resultObj.optJSONArray(typeKey);
             if (categories == null || categories.length() == 0) {
                 System.out.println("該当するカテゴリがありませんでした。");
                 return;
@@ -59,7 +63,7 @@ public class 楽天レシピ {
             if (!categoryId.isEmpty()) {
                 String rankingUrl = String.format(
                         "https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426?format=json&applicationId=%s&categoryId=%s",
-                        appId, categoryId);
+                        appId, URLEncoder.encode(categoryId, "UTF-8"));
                 HttpRequest rankingReq = HttpRequest.newBuilder().uri(URI.create(rankingUrl)).build();
                 HttpResponse<String> rankingRes = client.send(rankingReq, HttpResponse.BodyHandlers.ofString());
                 if (rankingRes.statusCode() != 200) {

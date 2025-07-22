@@ -1,0 +1,29 @@
+雑フォルダ直下のJavaファイル クラス・関数簡易説明
+
+■ Main.java
+- Mainクラス: ユーザー入力に応じて各APIデータを取得・表示する。
+  - main(): 入力受付・各Fetcherクラス呼び出し・結果表示。
+
+■ InuImageFetcher.java
+- InuImageFetcherクラス: Dog CEO APIから犬画像URLを取得する。
+  - fetchDogImageUrl(): 犬画像のURLをAPIから取得して返す。
+
+■ NekoImageFetcher.java
+- NekoImageFetcherクラス: The Cat APIから猫画像URLを取得する。
+  - fetchCatImageUrl(): 猫画像のURLをAPIから取得して返す。
+
+■ QRCodeFetcher.java
+- QRCodeFetcherクラス: QRServer APIでQRコード画像URLを生成する。
+  - getQrCodeUrl(String): 入力文字列からQRコード画像URLを生成して返す。
+
+■ AddressFetcher.java
+- AddressFetcherクラス: ZipCloud APIで郵便番号から住所を取得する。
+  - fetchAddress(String): 郵便番号から住所情報をAPIで取得して返す。
+
+■ HelloFetcher.java
+- HelloFetcherクラス: HelloSalut APIで指定言語の挨拶を取得する。
+  - fetchHello(String): 言語コードを指定して挨拶メッセージを取得。
+
+■ CalculatorFetcher.java
+- CalculatorFetcherクラス: Rurihabachi Calculator APIで計算結果を取得する。
+  - fetchCalcResult(String): 数式をAPIに送信し計算結果を取得。

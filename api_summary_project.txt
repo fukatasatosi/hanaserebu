@@ -52,10 +52,68 @@
   URL: https://dog.ceo/api/breeds/image/random
   概要: ランダムな犬画像のURLを返すAPI。
 
-■ 楽天本検索.java, 楽天商品.java, 楽天レシピ.java, 楽天トラベル.java, 楽天/楽天本検索.java, 楽天/楽天商品.java, 楽天/楽天レシピ.java, 楽天/楽天トラベル.java
-- 楽天WebサービスAPI
-  URL例: https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404
-  概要: 楽天の各種商品・書籍・レシピ・トラベル情報を検索・取得するAPI。
+■ 楽天本検索.java, 楽天/楽天本検索.java
+- 楽天ブックス総合検索API（BooksTotal API）
+  URL: https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404
+  概要: 書籍情報をキーワード等で検索・取得するAPI。
+- 楽天ブックス書籍検索API（BooksBook API）
+  URL: https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404
+  概要: 書籍タイトル等で詳細情報を取得するAPI。
+- 楽天ブックスCD検索API（BooksCD API）
+  URL: https://app.rakuten.co.jp/services/api/BooksCD/Search/20170404
+  概要: CDタイトル等でCD情報を検索・取得するAPI。
+- 楽天ブックスDVD検索API（BooksDVD API）
+  URL: https://app.rakuten.co.jp/services/api/BooksDVD/Search/20170404
+  概要: Blu-ray/DVDタイトル等で映像ソフト情報を検索・取得するAPI。
+- 楽天ブックス洋書検索API（BooksForeignBook API）
+  URL: https://app.rakuten.co.jp/services/api/BooksForeignBook/Search/20170404
+  概要: 洋書タイトル等で洋書情報を検索・取得するAPI。
+- 楽天ブックス雑誌検索API（BooksMagazine API）
+  URL: https://app.rakuten.co.jp/services/api/BooksMagazine/Search/20170404
+  概要: 雑誌タイトル等で雑誌情報を検索・取得するAPI。
+- 楽天ブックスゲーム本検索API（BooksGame API）
+  URL: https://app.rakuten.co.jp/services/api/BooksGame/Search/20170404
+  概要: ゲーム関連書籍タイトル等でゲーム本情報を検索・取得するAPI。
+- 楽天ブックスソフトウェア本検索API（BooksSoftware API）
+  URL: https://app.rakuten.co.jp/services/api/BooksSoftware/Search/20170404
+  概要: ソフトウェア関連書籍タイトル等でソフトウェア本情報を検索・取得するAPI。
+- 楽天ブックスジャンル検索API（BooksGenre API）
+  URL: https://app.rakuten.co.jp/services/api/BooksGenre/Search/20121128
+  概要: ジャンルIDを指定してジャンル名などの情報を取得するAPI。
+
+■ 楽天商品.java, 楽天/楽天商品.java
+- 楽天商品検索API
+  URL: https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170712
+  概要: 商品情報をキーワード等で検索・取得するAPI。
+- 楽天ジャンルAPI
+  URL: https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222
+  概要: 商品ジャンル（カテゴリー）情報を取得するAPI。
+- 楽天タグAPI
+  URL: https://app.rakuten.co.jp/services/api/IchibaTag/Search/20140222
+  概要: 商品に紐づくタグ情報を取得するAPI。
+- 楽天商品価格帯検索API
+  URL: https://app.rakuten.co.jp/services/api/Product/Search/20170426
+  概要: 価格帯で商品を検索するAPI。
+- 楽天商品ランキングAPI
+  URL: https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20220601
+  概要: 人気商品ランキング情報を取得するAPI。
+
+■ 楽天レシピ.java, 楽天/楽天レシピ.java
+- 楽天レシピカテゴリ一覧API
+  URL: https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426
+  概要: レシピカテゴリ情報を取得するAPI。
+  備考: レスポンスは「result」オブジェクト内に「large」「medium」「small」などの配列でカテゴリが格納される。カテゴリタイプごとに result.large, result.medium, result.small などを参照する必要がある。
+- 楽天レシピランキングAPI
+  URL: https://app.rakuten.co.jp/services/api/Recipe/CategoryRanking/20170426
+  概要: レシピカテゴリごとの人気レシピランキング情報を取得するAPI。
+
+■ 楽天トラベル.java, 楽天/楽天トラベル.java
+- 楽天トラベル簡易ホテル検索API
+  URL: https://webservice.rakuten.co.jp/api/simplehotelsearch/
+  概要: 宿泊施設を条件で検索・取得するAPI。
+- 楽天トラベルホテル詳細API
+  URL: https://app.rakuten.co.jp/services/api/Travel/HotelDetailSearch/20170426
+  概要: 宿泊施設の詳細情報を取得するAPI。
 
 ■ SleepApi.java, PIKACHU/SleepApi.java
 - Oura Sleep API

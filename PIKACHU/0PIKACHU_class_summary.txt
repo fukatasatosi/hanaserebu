@@ -1,0 +1,50 @@
+PIKACHUフォルダ直下のJavaファイル クラス・関数簡易説明
+
+■ Advice.java
+- Adviceクラス: アドバイスAPIから一言アドバイスを取得する。
+  - getAdvice(): Web APIからアドバイス文を取得して返す。
+
+■ ジョーク.java
+- ジョーククラス: ジョークAPIから英語ジョークを取得する。
+  - getJoke(): ジョークAPIからジョークを取得。
+  - getDadJoke(): DadJoke APIからジョークを取得。
+  - getChuckNorrisJoke(): ChuckNorris APIからジョークを取得。
+  - getRandomJoke(): 3つのジョークAPIからランダムで1つ取得。
+
+■ Buzz.java
+- Buzzクラス: ビジネス用語APIからバズワードを取得する。
+  - getBuzz(): Web APIからバズワードを取得して返す。
+
+■ Bored.java
+- Boredクラス: Bored APIから退屈解消アクティビティを取得する。
+  - getBored(): Web APIからアクティビティを取得して返す。
+
+■ 天気.java
+- 天気クラス: Open-Meteo APIで天気・気温を取得し要約を返す。
+  - getWeatherSummary(): 天気・気温の要約を取得。
+  - getWeatherDescription(int): 天気コードから説明文を返す。
+  - getClothesAdvice(double, int): 気温と天気から服装アドバイスを返す。
+
+■ ポケモン図鑑.java
+- ポケモン図鑑クラス: ポケモンAPIからポケモン情報を取得・表示。
+  - main(): ポケモン名を入力しAPIから情報取得・表示。
+
+■ SleepApi.java
+- SleepApiクラス: 睡眠時間を判定しOura APIで睡眠データ取得。
+  - main(): 睡眠時間入力・判定・APIデータ取得。
+
+■ p.java
+- pクラス: ポケモンAPIで2体のポケモンバトルをシミュレート。
+  - main(): ポケモン名入力・バトル処理。
+  - fetchPokemon(String): ポケモンAPIからステータス取得。
+
+■ hanaserebu.java
+- hanaserebuクラス: Gemini/DeepL API等を使ったチャットメイン処理。
+  - main(): ユーザー入力・各APIデータ取得・Gemini/DeepL連携。
+  - getUserInputAndSave(): 入力保存クラスで入力取得・保存。
+  - deeplTranslate(String): DeepL APIで翻訳。
+  - 天気情報取得(): 天気APIから天気情報取得。
+
+■ 入力保存.java
+- 入力保存クラス: ユーザー入力をファイル保存する。
+  - saveInput(String): 入力内容をファイルに保存。
