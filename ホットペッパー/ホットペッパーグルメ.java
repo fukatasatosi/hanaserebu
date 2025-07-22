@@ -58,7 +58,9 @@ public class ホットペッパーグルメ {
                 System.out.println("店名: " + shop.getString("name"));
                 System.out.println("住所: " + shop.getString("address"));
                 System.out.println("アクセス: " + shop.getString("access"));
-                System.out.println("URL: " + shop.getString("urls"));
+                JSONObject urlsObj = shop.optJSONObject("urls");
+                String pcUrl = urlsObj != null ? urlsObj.optString("pc", "-") : "-";
+                System.out.println("URL: " + pcUrl);
                 System.out.println("----------------------");
             }
         } catch (Exception e) {
@@ -90,7 +92,9 @@ public class ホットペッパーグルメ {
                 System.out.println("店名: " + shop.getString("name"));
                 System.out.println("住所: " + shop.getString("address"));
                 System.out.println("アクセス: " + shop.getString("access"));
-                System.out.println("URL: " + shop.getString("urls"));
+                JSONObject urlsObj = shop.optJSONObject("urls");
+                String pcUrl = urlsObj != null ? urlsObj.optString("pc", "-") : "-";
+                System.out.println("URL: " + pcUrl);
                 System.out.println("----------------------");
             }
         } catch (Exception e) {
