@@ -12,6 +12,7 @@ import org.json.JSONObject;
 /**
  * 楽天トラベルAPIを利用した簡易ホテル・施設検索アプリ
  * https://webservice.rakuten.co.jp/api/simplehotelsearch/
+ * https://webservice.rakuten.co.jp/documentation/hotel-detail-search
  */
 public class 楽天トラベル {
     /**
@@ -29,14 +30,15 @@ public class 楽天トラベル {
                 System.out.println("都道府県コード未入力のため大阪府(27)で検索します。");
             }
             System.out.print("検索キーワード（ホテル名・地名など、省略可。例: 梅田）: ");
-            String keyword = scanner.nextLine().trim();
-
+            String smallClassCode = scanner.nextLine().trim();
+            System.out.println("hotelNoを入力してください（例: 123456）。省略可。");
+            String No = scanner.nextLine().trim();
             // 楽天APIアプリIDを入力してください
             String appId = "1057854877760086255"; // ←ご自身の楽天アプリIDに変更
 
             // --- 楽天トラベルAPI（SimpleHotelSearch）で施設検索 ---
             // API仕様上、都道府県コードだけでは検索不可。middleClassCodeには正しいエリアコード（例: 27→270000, 13→130000）が必要
-            String largeClassCode = "japan";
+            String largeClassCode = "1";
             String middleClassCode;
             if (prefCode.matches("\\d{2}")) {
                 middleClassCode = prefCode + "0000";
@@ -47,9 +49,9 @@ public class 楽天トラベル {
                 return;
             }
             String url = String.format(
-                    "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?format=json&applicationId=%s&largeClassCode=%s&middleClassCode=%s&keyword=%s",
+                    "https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426?format=json&applicationId=%s&largeClassCode=%s&middleClassCode=%s&smallClassCode=%s&hotelNo=%s",
                     appId, URLEncoder.encode(largeClassCode, "UTF-8"), URLEncoder.encode(middleClassCode, "UTF-8"),
-                    URLEncoder.encode(keyword, "UTF-8"));
+                    URLEncoder.encode(smallClassCode, "UTF-8"), URLEncoder.encode(No, "UTF-8"));
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -66,47 +68,46 @@ public class 楽天トラベル {
             }
             System.out.println("--- 検索結果 ---");
             for (int i = 0; i < Math.min(10, hotels.length()); i++) {
-                JSONObject hotel = hotels.getJSONObject(i).getJSONObject("hotel").getJSONArray("hotelBasicInfo")
-                        .getJSONObject(0);
-                System.out.println((i + 1) + ". " + hotel.optString("hotelName", "(名称なし)"));
+                JSONObject hotelObj = hotels.getJSONObject(i);
+                JSONArray hotelArray = hotelObj.getJSONArray("hotel");
+                JSONObject hotel = hotelArray.getJSONObject(0).getJSONObject("hotelBasicInfo");
+                int hotelNo = hotel.optInt("hotelNo", 0);
+                System.out.println((i + 1) + ". " + hotel.optString("hotelName", "(名称なし)") + " [施設番号: " + hotelNo + "]");
                 System.out.println("  住所: " + hotel.optString("address1", "") + hotel.optString("address2", ""));
                 System.out.println("  アクセス: " + hotel.optString("access", "-"));
                 System.out.println("  電話: " + hotel.optString("telephoneNo", "-"));
                 System.out.println("  料金: " + hotel.optInt("hotelMinCharge", 0) + "円～");
                 System.out.println("  URL: " + hotel.optString("hotelInformationUrl", "-"));
-                // 施設詳細情報の取得・表示
-                System.out.print("  → この施設の詳細情報を表示しますか？ (y/n): ");
-                String showDetail = scanner.nextLine().trim().toLowerCase();
-                if (showDetail.equals("y")) {
-                    int hotelNo = hotel.optInt("hotelNo", 0);
-                    if (hotelNo > 0) {
-                        String detailUrl = String.format(
-                                "https://app.rakuten.co.jp/services/api/Travel/HotelDetailSearch/20170426?format=json&applicationId=%s&hotelNo=%d",
-                                appId, hotelNo);
-                        HttpRequest detailReq = HttpRequest.newBuilder().uri(URI.create(detailUrl)).build();
-                        HttpResponse<String> detailRes = client.send(detailReq, HttpResponse.BodyHandlers.ofString());
-                        if (detailRes.statusCode() == 200) {
-                            JSONObject detailRoot = new JSONObject(detailRes.body());
-                            JSONArray detailHotels = detailRoot.optJSONArray("hotels");
-                            if (detailHotels != null && detailHotels.length() > 0) {
-                                JSONObject detail = detailHotels.getJSONObject(0).getJSONObject("hotel")
-                                        .getJSONArray("hotelDetailInfo").getJSONObject(0);
-                                System.out.println("    --- 施設詳細 ---");
-                                System.out.println("    チェックイン: " + detail.optString("checkinTime", "-"));
-                                System.out.println("    チェックアウト: " + detail.optString("checkoutTime", "-"));
-                                System.out.println("    駐車場: " + detail.optString("parkingInformation", "-"));
-                                System.out.println("    部屋数: " + detail.optString("roomNum", "-"));
-                                System.out.println("    施設説明: " + detail.optString("hotelCaption", "-"));
-                            } else {
-                                System.out.println("    詳細情報が取得できませんでした。");
-                            }
-                        } else {
-                            System.out.println("    詳細APIリクエスト失敗: " + detailRes.statusCode());
-                        }
-                    } else {
-                        System.out.println("    ホテル番号が取得できませんでした。");
-                    }
+            }
+            System.out.print("詳細を見たい施設番号を入力してください（例: 123456）: ");
+            String inputHotelNo = scanner.nextLine().trim();
+            if (!inputHotelNo.matches("\\d+")) {
+                System.out.println("施設番号は数字で入力してください。");
+                return;
+            }
+            int selectedHotelNo = Integer.parseInt(inputHotelNo);
+            String detailUrl = String.format(
+                    "https://app.rakuten.co.jp/services/api/Travel/HotelDetailSearch/20170426?format=json&applicationId=%s&hotelNo=%d",
+                    appId, selectedHotelNo);
+            HttpRequest detailReq = HttpRequest.newBuilder().uri(URI.create(detailUrl)).build();
+            HttpResponse<String> detailRes = client.send(detailReq, HttpResponse.BodyHandlers.ofString());
+            if (detailRes.statusCode() == 200) {
+                JSONObject detailRoot = new JSONObject(detailRes.body());
+                JSONArray detailHotels = detailRoot.optJSONArray("hotels");
+                if (detailHotels != null && detailHotels.length() > 0) {
+                    JSONObject detail = detailHotels.getJSONObject(0).getJSONObject("hotel")
+                            .getJSONArray("hotelDetailInfo").getJSONObject(0);
+                    System.out.println("--- 施設詳細 ---");
+                    System.out.println("チェックイン: " + detail.optString("checkinTime", "-"));
+                    System.out.println("チェックアウト: " + detail.optString("checkoutTime", "-"));
+                    System.out.println("駐車場: " + detail.optString("parkingInformation", "-"));
+                    System.out.println("部屋数: " + detail.optString("roomNum", "-"));
+                    System.out.println("施設説明: " + detail.optString("hotelCaption", "-"));
+                } else {
+                    System.out.println("詳細情報が取得できませんでした。");
                 }
+            } else {
+                System.out.println("詳細APIリクエスト失敗: " + detailRes.statusCode());
             }
         } catch (Exception e) {
             System.out.println("エラー: " + e.getMessage());

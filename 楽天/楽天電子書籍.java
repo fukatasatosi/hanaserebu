@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -14,7 +16,9 @@ public class 楽天電子書籍 {
 
     public static void main(String[] args) {
         // 検索キーワード例
-        String keyword = "小説";
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("検索キーワードを入力してください: ");
+        String keyword = scanner.nextLine().trim();
         String genreId = "001004"; // 例: 小説・エッセイ
         searchEbooks(keyword, genreId);
     }
