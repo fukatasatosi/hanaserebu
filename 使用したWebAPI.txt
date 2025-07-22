@@ -1,0 +1,141 @@
+■ 住所検索.java
+- API名: ZipCloud 住所検索API
+- API URL: https://zipcloud.ibsnet.co.jp/api/search
+- 主な関数: searchAddress(String zipcode)
+　・searchAddress(String zipcode)：郵便番号から住所情報（都道府県・市区町村・町域）を取得
+- フォルダ: hanaserebu
+- 主な関数の説明: 郵便番号を入力すると、対応する住所情報（都道府県・市区町村・町域）をAPIから取得します。
+
+■ ホットペッパーグルメ.java
+- API名: ホットペッパーグルメAPI
+- API URL: http://webservice.recruit.co.jp/hotpepper/gourmet/v1/
+- 主な関数: searchRestaurants(String areaCode), searchRestaurantsByLocation(double lat, double lng, int range, int order)
+　・searchRestaurants(String areaCode)：エリアコードで飲食店検索
+  ・searchRestaurantsByLocation(double lat, double lng, int range, int order)：位置情報で飲食店検索
+- フォルダ: hanaserebu/ホットペッパー
+- 主な関数の説明: 指定したエリアコードや位置情報（緯度・経度）から、近隣の飲食店情報を検索・取得します。
+
+■ クレカ.java
+- API名: ホットペッパークレジットカードAPI
+- API URL: http://webservice.recruit.co.jp/hotpepper/credit_card/v1/
+- 主な関数: getCreditCards()
+　・getCreditCards()：利用可能なクレジットカードブランド一覧取得
+- フォルダ: hanaserebu/ホットペッパー
+- 主な関数の説明: 利用可能なクレジットカードブランドの一覧をAPIから取得します。
+
+■ 楽天電子書籍.java
+- API名: 楽天Kobo電子書籍API
+- API URL: https://app.rakuten.co.jp/services/api/Kobo/EbookSearch/20170426
+- 主な関数: searchEbooks(String keyword, String genreId)
+  ・searchEbooks(String keyword, String genreId)：キーワード・ジャンルで電子書籍検索
+- フォルダ: hanaserebu/楽天
+- 主な関数の説明: キーワードやジャンルIDを指定して、楽天Koboの電子書籍を検索・取得します。
+
+■ 楽天レシピ.java
+- API名: 楽天レシピAPI
+- API URL: https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426
+- 主な関数: main（カテゴリ一覧取得）
+　・main（カテゴリ一覧取得）：料理ジャンル一覧取得
+- フォルダ: hanaserebu/楽天
+- 主な関数の説明: 楽天レシピのカテゴリ一覧（料理ジャンル）をAPIから取得します。
+
+■ 楽天商品.java
+- API名: 楽天商品検索API
+- API URL: https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170712
+- 主な関数: main（商品検索・価格帯・ランキング等）
+  ・main（商品検索・価格帯・ランキング等）：商品検索・価格帯・ランキング取・
+- フォルダ: hanaserebu/楽天
+- 主な関数の説明: 楽天市場の商品をキーワードや価格帯、ランキングなどで検索・取得します。
+
+■ 楽天本検索.java
+- API名: 楽天BooksTotal API
+- API URL: https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404
+- 主な関数: main（書籍・CD・DVD・洋書検索）
+  ・main（書籍・CD・DVD・洋書検索）：書籍・CD・DVD・洋書検索
+- フォルダ: hanaserebu/楽天
+- 主な関数の説明: 楽天ブックスで書籍・CD・DVD・洋書などを検索・取得します。
+
+■ 楽天トラベル.java
+- API名: 楽天トラベルAPI
+- API URL: https://app.rakuten.co.jp/services/api/Travel/SimpleHotelSearch/20170426
+- 主な関数: main（ホテル・施設検索）
+  ・main（ホテル・施設検索）：ホテル・宿泊施設検索
+- フォルダ: hanaserebu/楽天
+- 主な関数の説明: 楽天トラベルでホテルや宿泊施設を検索・取得します。
+
+■ URL使用/Main.java
+- API名: Dog CEO API, The Cat API, QRCode API
+- API URL: https://dog.ceo/api/breeds/image/random, 
+           https://api.thecatapi.com/v1/images/search,   
+           https://api.qrserver.com/v1/create-qr-code/
+- 主な関数: InuImageFetcher.fetchDogImageUrl(), NekoImageFetcher.fetchCatImageUrl(), QRCodeFetcher.getQrCodeUrl(String data)
+  ・InuImageFetcher.fetchDogImageUrl()：犬画像取得
+  ・NekoImageFetcher.fetchCatImageUrl()：猫画像取得
+  ・QRCodeFetcher.getQrCodeUrl(String data)：QRコード画像生成
+- フォルダ: hanaserebu/URL使用
+- 主な関数の説明: 犬・猫のランダム画像URLを取得したり、指定したデータからQRコード画像URLを生成します。
+
+■ PIKACHU/ポケモン図鑑.java
+- API名: PokeAPI
+- API URL: https://pokeapi.co/api/v2/pokemon/{name}
+- 主な関数: main（ポケモン情報取得）
+  ・main（ポケモン情報取得）：ポケモン詳細情報取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: 指定したポケモン名から、種族値やタイプなどの詳細情報を取得します。
+
+■ PIKACHU/天気.java
+- API名: Open-Meteo Weather API
+- API URL: https://api.open-meteo.com/v1/forecast
+- 主な関数: getWeatherSummary()
+  ・getWeatherSummary()：天気予報要約取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: 指定した地域の天気予報（気温・降水量など）を取得し、要約を返します。
+
+■ PIKACHU/ジョーク.java
+- API名: Official Joke API
+- API URL: https://official-joke-api.appspot.com/jokes/random
+- 主な関数: getJoke()
+　・getJoke()：ランダムジョーク取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: ランダムなジョーク（英語）をAPIから取得します。
+
+■ PIKACHU/Advice.java
+- API名: Advice Slip API
+- API URL: https://api.adviceslip.com/advice
+- 主な関数: getAdvice()
+　・getAdvice()：ランダムアドバイス取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: ランダムなアドバイス（英語）をAPIから取得します。
+
+■ PIKACHU/Bored.java
+- API名: Bored API
+- API URL: https://bored-api.appbrewery.com/random
+- 主な関数: getBored()
+　・getBored()：暇つぶしアクティビティ案取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: 暇つぶしのアクティビティ案をAPIから取得します。
+
+■ PIKACHU/Buzz.java
+- API名: Corporate BS Generator API
+- API URL: https://corporatebs-generator.sameerkumar.website/
+- 主な関数: getBuzz()
+　・getBuzz()：ビジネスバズワード取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: ビジネス用語のバズワード（英語）をAPIから取得します。
+
+■ PIKACHU/SleepApi.java
+- API名: Oura API
+- API URL: https://api.ouraring.com/v2/usercollection/sleep
+- 主な関数: main（睡眠データ取得）
+　・main（睡眠データ取得）：Oura Ringの睡眠データ取得
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: Oura Ringの睡眠データ（睡眠時間・質など）をAPIから取得します。
+
+■ PIKACHU/hanaserebu.java
+- API名: Google Gemini API
+- API URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+- 主な関数: main, getUserInputAndSave()
+　・main：Gemini AIによる文章生成
+　・getUserInputAndSave()：ユーザー入力の保存・処理
+- フォルダ: hanaserebu/PIKACHU
+- 主な関数の説明: Gemini AIを使ってユーザー入力に応じた文章生成や保存を行います。
