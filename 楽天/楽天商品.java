@@ -1,6 +1,5 @@
 package 楽天;
 
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,6 +27,7 @@ public class 楽天商品 {
      * - 楽天商品検索APIで商品情報を取得
      * - ジャンル名・タグ名もAPIで取得
      * - 価格帯検索API・ランキングAPIも利用
+     * 
      * @param args コマンドライン引数（未使用）
      */
     public static void main(String[] args) {
@@ -55,13 +55,11 @@ public class 楽天商品 {
             // --- 商品検索API（IchibaItem/Search）で商品一覧取得 ---
             // 商品検索API（IchibaItem/Search）で商品情報を取得
             String url = String.format(
-                "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601?format=json&applicationId=%s&keyword=%s",
-                appId, URLEncoder.encode(keyword, "UTF-8")
-            );
+                    "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601?format=json&applicationId=%s&keyword=%s",
+                    appId, URLEncoder.encode(keyword, "UTF-8"));
             if (priceSearch.equals("y")) {
                 url += "&minPrice=" + minPrice + "&maxPrice=" + maxPrice;
             }
-
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -80,6 +78,10 @@ public class 楽天商品 {
             // --- 各商品ごとに情報表示（カテゴリー・タグも取得） ---
             for (int i = 0; i < Math.min(10, items.length()); i++) {
                 JSONObject item = items.getJSONObject(i).getJSONObject("Item");
+                // 検索キーワードが商品名に含まれているか厳密に判定
+                if (!item.getString("itemName").contains(keyword)) {
+                    continue;
+                }
                 System.out.println((i + 1) + ". " + item.getString("itemName"));
                 System.out.println("  価格: " + item.getInt("itemPrice") + "円");
                 System.out.println("  URL: " + item.getString("itemUrl"));
@@ -92,14 +94,12 @@ public class 楽天商品 {
                 System.out.println("  タグ: " + tagNames);
             }
 
-
             // --- 商品価格帯検索API（Product/Search）で該当商品の詳細取得 ---
             // 商品価格帯検索API（Product/Search）で価格帯に合致する商品を取得
             if (priceSearch.equals("y")) {
                 String productUrl = String.format(
-                    "https://app.rakuten.co.jp/services/api/Product/Search/20170426?format=json&applicationId=%s&keyword=%s&minPrice=%d&maxPrice=%d",
-                    appId, URLEncoder.encode(keyword, "UTF-8"), minPrice, maxPrice
-                );
+                        "https://app.rakuten.co.jp/services/api/Product/Search/20170426?format=json&applicationId=%s&keyword=%s&minPrice=%d&maxPrice=%d",
+                        appId, URLEncoder.encode(keyword, "UTF-8"), minPrice, maxPrice);
                 HttpRequest prodReq = HttpRequest.newBuilder().uri(URI.create(productUrl)).build();
                 HttpResponse<String> prodRes = client.send(prodReq, HttpResponse.BodyHandlers.ofString());
                 if (prodRes.statusCode() == 200) {
@@ -110,9 +110,9 @@ public class 楽天商品 {
                         for (int i = 0; i < Math.min(10, prods.length()); i++) {
                             JSONObject prod = prods.getJSONObject(i).getJSONObject("Product");
                             System.out.println((i + 1) + ". " + prod.getString("productName"));
-                            System.out.println("  メーカー: " + prod.optString("makerName", "-") );
-                            System.out.println("  JANコード: " + prod.optString("jan", "-") );
-                            System.out.println("  商品URL: " + prod.optString("productUrl", "-") );
+                            System.out.println("  メーカー: " + prod.optString("makerName", "-"));
+                            System.out.println("  JANコード: " + prod.optString("jan", "-"));
+                            System.out.println("  商品URL: " + prod.optString("productUrl", "-"));
                         }
                     } else {
                         System.out.println("\n商品価格帯検索APIで該当商品がありませんでした。");
@@ -122,13 +122,11 @@ public class 楽天商品 {
                 }
             }
 
-
             // --- 楽天ランキングAPI（IchibaItem/Ranking）で人気商品表示 ---
             // 楽天ランキングAPI（IchibaItem/Ranking）で人気商品を取得
             String rankingUrl = String.format(
-                "https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20220601?format=json&applicationId=%s&keyword=%s",
-                appId, URLEncoder.encode(keyword, "UTF-8")
-            );
+                    "https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20220601?format=json&applicationId=%s&keyword=%s",
+                    appId, URLEncoder.encode(keyword, "UTF-8"));
             HttpRequest rankingReq = HttpRequest.newBuilder().uri(URI.create(rankingUrl)).build();
             HttpResponse<String> rankingRes = client.send(rankingReq, HttpResponse.BodyHandlers.ofString());
             if (rankingRes.statusCode() == 200) {
@@ -148,27 +146,78 @@ public class 楽天商品 {
             } else {
                 System.out.println("\nランキングAPIリクエスト失敗: " + rankingRes.statusCode());
             }
+
+            // --- 検索キーワードに関連するジャンル・タグごとに商品ランキング形式で表示 ---
+            // ジャンル・タグごとに商品を集計
+            java.util.Map<String, java.util.List<JSONObject>> genreMap = new java.util.HashMap<>();
+            java.util.Map<String, java.util.List<JSONObject>> tagMap = new java.util.HashMap<>();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = items.getJSONObject(i).getJSONObject("Item");
+                if (!item.getString("itemName").contains(keyword)) {
+                    continue;
+                }
+                int genreId = item.getInt("genreId");
+                String genreName = getGenreName(genreId, appId);
+                String tagNames = getTagNames(item.getInt("itemCode"), appId);
+                // ジャンルごとに商品を集計
+                genreMap.computeIfAbsent(genreName, k -> new java.util.ArrayList<>()).add(item);
+                // タグごとに商品を集計（複数タグ対応）
+                for (String tag : tagNames.split(", ?")) {
+                    if (!tag.equals("(タグなし)") && !tag.equals("(取得失敗)")) {
+                        tagMap.computeIfAbsent(tag, k -> new java.util.ArrayList<>()).add(item);
+                    }
+                }
+            }
+            // --- ジャンルごとランキング表示 ---
+            System.out.println("\n--- ジャンル別商品ランキング ---");
+            for (String genre : genreMap.keySet()) {
+                System.out.println("■ジャンル: " + genre);
+                java.util.List<JSONObject> list = genreMap.get(genre);
+                // 価格順でソート（高い順）
+                list.sort((a, b) -> Integer.compare(b.getInt("itemPrice"), a.getInt("itemPrice")));
+                for (int i = 0; i < Math.min(5, list.size()); i++) {
+                    JSONObject item = list.get(i);
+                    System.out.printf("%d. %s (価格: %d円)\n", i + 1, item.getString("itemName"),
+                            item.getInt("itemPrice"));
+                    System.out.println("   URL: " + item.getString("itemUrl"));
+                }
+            }
+            // --- タグごとランキング表示 ---
+            System.out.println("\n--- タグ別商品ランキング ---");
+            for (String tag : tagMap.keySet()) {
+                System.out.println("■タグ: " + tag);
+                java.util.List<JSONObject> list = tagMap.get(tag);
+                // 価格順でソート（高い順）
+                list.sort((a, b) -> Integer.compare(b.getInt("itemPrice"), a.getInt("itemPrice")));
+                for (int i = 0; i < Math.min(5, list.size()); i++) {
+                    JSONObject item = list.get(i);
+                    System.out.printf("%d. %s (価格: %d円)\n", i + 1, item.getString("itemName"),
+                            item.getInt("itemPrice"));
+                    System.out.println("   URL: " + item.getString("itemUrl"));
+                }
+            }
         } catch (Exception e) {
             System.out.println("エラー: " + e.getMessage());
         }
     }
 
-
     /**
      * 楽天ジャンルAPIでジャンル名（カテゴリー名）を取得する
+     * 
      * @param genreId ジャンルID
-     * @param appId 楽天アプリID
+     * @param appId   楽天アプリID
      * @return ジャンル名（取得失敗時は"(取得失敗)"や"(不明)"）
      */
     private static String getGenreName(int genreId, String appId) {
         try {
             String url = String.format(
-                "https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222?format=json&applicationId=%s&genreId=%d",
-                appId, genreId);
+                    "https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222?format=json&applicationId=%s&genreId=%d",
+                    appId, genreId);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) return "(取得失敗)";
+            if (response.statusCode() != 200)
+                return "(取得失敗)";
             JSONObject root = new JSONObject(response.body());
             JSONArray genres = root.getJSONArray("children");
             if (genres.length() > 0) {
@@ -185,8 +234,9 @@ public class 楽天商品 {
 
     /**
      * 楽天タグAPIで商品に紐づくタグ名を取得する
+     * 
      * @param itemCode 商品コード（int型だがAPIはString型を要求）
-     * @param appId 楽天アプリID
+     * @param appId    楽天アプリID
      * @return タグ名のカンマ区切り文字列（タグなし・取得失敗時は"(タグなし)"や"(取得失敗)"）
      */
     private static String getTagNames(int itemCode, String appId) {
@@ -194,12 +244,13 @@ public class 楽天商品 {
             // itemCodeは本来文字列ですが、APIレスポンスによってはint型で来る場合があるためStringに変換
             String code = String.valueOf(itemCode);
             String url = String.format(
-                "https://app.rakuten.co.jp/services/api/IchibaTag/Search/20140222?format=json&applicationId=%s&itemCode=%s",
-                appId, code);
+                    "https://app.rakuten.co.jp/services/api/IchibaTag/Search/20140222?format=json&applicationId=%s&itemCode=%s",
+                    appId, code);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) return "(取得失敗)";
+            if (response.statusCode() != 200)
+                return "(取得失敗)";
             JSONObject root = new JSONObject(response.body());
             JSONArray tags = root.optJSONArray("Tags");
             if (tags != null && tags.length() > 0) {
@@ -207,7 +258,8 @@ public class 楽天商品 {
                 for (int i = 0; i < tags.length(); i++) {
                     JSONObject tag = tags.getJSONObject(i).getJSONObject("Tag");
                     sb.append(tag.getString("tagName"));
-                    if (i < tags.length() - 1) sb.append(", ");
+                    if (i < tags.length() - 1)
+                        sb.append(", ");
                 }
                 return sb.toString();
             }
