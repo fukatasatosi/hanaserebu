@@ -1,3 +1,4 @@
+
 ■ 住所検索.java
 - API名: ZipCloud 住所検索API
 - API URL: https://zipcloud.ibsnet.co.jp/api/search
@@ -29,31 +30,111 @@
 - 主な関数: searchEbooks(String keyword, String genreId)
   ・searchEbooks(String keyword, String genreId)：キーワード・ジャンルで電子書籍検索
 - フォルダ: hanaserebu/楽天
-- 主な関数の説明: キーワードやジャンルIDを指定して、楽天Koboの電子書籍を検索・取得します。
+- 主な関数の説明: 楽天Kobo電子書籍APIにキーワードやジャンルIDを指定してリクエストを送り、該当する電子書籍のタイトル・著者・価格などの情報をJSONで取得し、一覧表示します。
 
 ■ 楽天レシピ.java
 - API名: 楽天レシピAPI
 - API URL: https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426
-- 主な関数: main（カテゴリ一覧取得）
+- 主な関数: main（カテゴリ一覧取得）, searchRecipe(String keyword)
 　・main（カテゴリ一覧取得）：料理ジャンル一覧取得
+　・searchRecipe(String keyword)：キーワードでレシピ検索
 - フォルダ: hanaserebu/楽天
-- 主な関数の説明: 楽天レシピのカテゴリ一覧（料理ジャンル）をAPIから取得します。
+- 主な関数の説明: 楽天レシピAPIにアクセスし、カテゴリ一覧（料理ジャンル）や、キーワードでレシピを検索し、レシピ名・材料・URLなどを取得して表示します。
+
+■ 楽天レシピ.java
+-API : カテゴリー一覧取得API
+-API URL: https://app.rakuten.co.jp/services/api/Recipe/CategoryList/20170426
+-主な関数: main（カテゴリ一覧取得）
+　・main（カテゴリ一覧取得）：料理ジャンル一覧取得
+-フォルダ: hanaserebu/楽天
+-主な関数の説明: 楽天レシピAPIにアクセスし、カテゴリタイプ（large, medium, small）を指定して、料理ジャンルの一覧を取得し、カテゴリ名・カテゴリIDを表示します。
 
 ■ 楽天商品.java
-- API名: 楽天商品検索API
-- API URL: https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170712
-- 主な関数: main（商品検索・価格帯・ランキング等）
-  ・main（商品検索・価格帯・ランキング等）：商品検索・価格帯・ランキング取・
-- フォルダ: hanaserebu/楽天
-- 主な関数の説明: 楽天市場の商品をキーワードや価格帯、ランキングなどで検索・取得します。
+  ・main（商品検索・価格帯・ランキング等）：商品検索・価格帯・ランキング取得
+ -API名: 楽天商品検索API（IchibaItem/Search）
+ -API URL: https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601
+ -主な関数: main（商品検索）
+  ・main：キーワードや価格帯で楽天市場の商品を検索し、商品名・価格・URLなどを表示
+ -フォルダ: hanaserebu/楽天
+ -主な関数の説明: ユーザーが入力したキーワードや価格帯条件で楽天市場の商品を検索し、商品情報（商品名・価格・URLなど）を最大10件まで取得・表示します。
+
+ -API名: 楽天商品価格帯検索API（Product/Search）
+ -API URL: https://app.rakuten.co.jp/services/api/Product/Search/20170426
+ -主な関数: main（価格帯検索）
+  ・main：指定した価格帯に合致する商品の詳細情報（商品名・メーカー・JANコード・URLなど）を取得・表示
+ -フォルダ: hanaserebu/楽天
+ -主な関数の説明: 価格帯条件を指定した場合、該当する商品の詳細情報をAPIから取得し、最大10件まで表示します。
+
+ -API名: 楽天ジャンルAPI（IchibaGenre/Search）
+ -API URL: https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222
+ -主な関数: getGenreName(int genreId, String appId)
+  ・getGenreName：商品に紐づくジャンルIDからジャンル名（カテゴリー名）を取得
+ -フォルダ: hanaserebu/楽天
+ -主な関数の説明: 商品ごとにジャンルIDをAPIに送り、該当するジャンル名（例：家電、食品など）を取得して表示します。
+
+ -API名: 楽天タグAPI（IchibaTag/Search）
+ -API URL: https://app.rakuten.co.jp/services/api/IchibaTag/Search/20140222
+ -主な関数: getTagNames(int itemCode, String appId)
+  ・getTagNames：商品コードからタグ名（複数可）を取得
+ -フォルダ: hanaserebu/楽天
+ -主な関数の説明: 商品ごとに商品コードをAPIに送り、該当するタグ名（例：新商品、人気、限定など）をカンマ区切りで取得・表示します。
+
+ -API名: 楽天ランキングAPI（IchibaItem/Ranking）
+ -API URL: https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20220601
+ -主な関数: main（ランキング表示）
+  ・main：検索キーワードに関連する人気商品（ランキング上位）を取得・表示
+ -フォルダ: hanaserebu/楽天
+ -主な関数の説明: 楽天市場APIを使い、ユーザー入力のキーワードや価格帯で商品を検索し、商品名・価格・ショップ名などを表示。ジャンル名やタグ名もAPIで取得し、ランキングや価格帯ごとの商品も取得・表示します。
 
 ■ 楽天本検索.java
-- API名: 楽天BooksTotal API
+- API名: 楽天BooksTotal API（BooksTotal/Search）
 - API URL: https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404
-- 主な関数: main（書籍・CD・DVD・洋書検索）
-  ・main（書籍・CD・DVD・洋書検索）：書籍・CD・DVD・洋書検索
+- 主な関数: main, searchBooks(String keyword)
+  ・main：キーワードで楽天ブックス全体から書籍・CD・DVD・洋書を横断検索し、タイトル・著者・価格・出版日・ISBNなどを最大10件まで表示します。
+  ・searchBooks(String keyword)：キーワードで書籍を検索し、タイトル・著者・価格・出版日などを取得します。
+
+- API名: 楽天BooksBook API（BooksBook/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404
+- 主な関数: main
+  ・main：キーワードで詳細な書籍情報（タイトル・著者・出版社・発売日・ISBN・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksCD API（BooksCD/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksCD/Search/20170404
+- 主な関数: main
+  ・main：キーワードでCD情報（タイトル・アーティスト・レーベル・発売日・JAN・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksDVD API（BooksDVD/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksDVD/Search/20170404
+- 主な関数: main
+  ・main：キーワードでBlu-ray/DVD情報（タイトル・出演者・メーカー・ディスク種別・発売日・JAN・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksForeignBook API（BooksForeignBook/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksForeignBook/Search/20170404
+- 主な関数: main
+  ・main：キーワードで洋書情報（タイトル・著者・出版社・発売日・ISBN・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksMagazine API（BooksMagazine/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksMagazine/Search/20170404
+- 主な関数: main
+  ・main：キーワードで雑誌情報（タイトル・出版社・発売日・JAN・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksGame API（BooksGame/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksGame/Search/20170404
+- 主な関数: main
+  ・main：キーワードでゲーム本情報（タイトル・メーカー・JAN・発売日・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksSoftware API（BooksSoftware/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksSoftware/Search/20170404
+- 主な関数: main
+  ・main：キーワードでソフトウェア本情報（タイトル・メーカー・JAN・発売日・価格・URLなど）を最大10件まで取得・表示します。
+
+- API名: 楽天BooksGenre API（BooksGenre/Search）
+- API URL: https://app.rakuten.co.jp/services/api/BooksGenre/Search/20121128
+- 主な関数: main
+  ・main：ジャンルIDを指定してジャンル名（カテゴリー名）を取得し、表示します。
+
 - フォルダ: hanaserebu/楽天
-- 主な関数の説明: 楽天ブックスで書籍・CD・DVD・洋書などを検索・取得します。
+- 主な関数の説明: 楽天BooksTotal APIや各種楽天ブックスAPIを使い、キーワードや条件で書籍・CD・DVD・洋書・雑誌・ゲーム本・ソフトウェア本・ジャンル情報を検索し、各種情報（タイトル・著者・価格・発売日・ISBN・JAN・URLなど）を最大10件まで取得・表示します。
 
 ■ 楽天トラベル.java
 - API名: 楽天トラベルAPI
@@ -61,7 +142,7 @@
 - 主な関数: main（ホテル・施設検索）
   ・main（ホテル・施設検索）：ホテル・宿泊施設検索
 - フォルダ: hanaserebu/楽天
-- 主な関数の説明: 楽天トラベルでホテルや宿泊施設を検索・取得します。
+- 主な関数の説明: 楽天トラベルAPIを使い、エリアやキーワードでホテル・宿泊施設を検索し、施設名・住所・料金・空室状況などを取得して表示します。
 
 ■ 雑/Main.java
 - API名: Dog CEO API, The Cat API, QRCode API
@@ -90,6 +171,24 @@
 　・fetchHello(String lang)：言語コード（例: ja, en, fr, kk）をAPIに送信し、挨拶文を取得
 - フォルダ: hanaserebu/雑
 - 主な関数の説明: 入力された言語コードをWebAPIに送信し、対応する言語の挨拶文（Hello, Bonjour, こんにちは等）を取得して返します。
+
+■ 雑/辞書.java
+- API名: Free Dictionary API (dictionaryapi.dev)
+- API URL: https://api.dictionaryapi.dev/api/v2/entries/en/{word}
+- 主な関数: searchWord(String word)
+　・searchWord(String word)：英単語の意味・例文・品詞・発音を取得
+- フォルダ: hanaserebu/雑
+- 主な関数の説明: 入力した英単語の意味・例文・品詞・発音をAPIから取得し、コンソールに表示します。
+
+■ 雑/映画.java
+- API名: TMDb API (The Movie Database)
+- API URL: https://api.themoviedb.org/3/search/movie など
+- 主な関数: searchMovie(String query), searchByGenre(String genreId), searchByActor(String actorName)
+　・searchMovie(String query)：映画タイトルで検索
+　・searchByGenre(String genreId)：ジャンルIDで映画検索
+　・searchByActor(String actorName)：俳優名で出演映画検索
+- フォルダ: hanaserebu/雑
+- 主な関数の説明: 映画タイトル・ジャンルID・俳優名でTMDb APIを使い、映画情報（タイトル・公開日・概要）を最大5件まで取得・表示します。
 
 ■ PIKACHU/ポケモン図鑑.java
 - API名: PokeAPI
