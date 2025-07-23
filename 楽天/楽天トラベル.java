@@ -94,16 +94,25 @@ public class 楽天トラベル {
             if (detailRes.statusCode() == 200) {
                 JSONObject detailRoot = new JSONObject(detailRes.body());
                 JSONArray detailHotels = detailRoot.optJSONArray("hotels");
+                boolean found = false;
                 if (detailHotels != null && detailHotels.length() > 0) {
-                    JSONObject detail = detailHotels.getJSONObject(0).getJSONObject("hotel")
-                            .getJSONArray("hotelDetailInfo").getJSONObject(0);
-                    System.out.println("--- 施設詳細 ---");
-                    System.out.println("チェックイン: " + detail.optString("checkinTime", "-"));
-                    System.out.println("チェックアウト: " + detail.optString("checkoutTime", "-"));
-                    System.out.println("駐車場: " + detail.optString("parkingInformation", "-"));
-                    System.out.println("部屋数: " + detail.optString("roomNum", "-"));
-                    System.out.println("施設説明: " + detail.optString("hotelCaption", "-"));
-                } else {
+                    JSONArray hotelArray = detailHotels.getJSONObject(0).getJSONArray("hotel");
+                    for (int i = 0; i < hotelArray.length(); i++) {
+                        JSONObject hotelObj = hotelArray.getJSONObject(i);
+                        if (hotelObj.has("hotelDetailInfo")) {
+                            JSONObject detail = hotelObj.getJSONObject("hotelDetailInfo");
+                            System.out.println("--- 施設詳細 ---");
+                            System.out.println("チェックイン: " + detail.optString("checkinTime", "-"));
+                            System.out.println("チェックアウト: " + detail.optString("checkoutTime", "-"));
+                            System.out.println("駐車場: " + detail.optString("parkingInformation", "-"));
+                            System.out.println("部屋数: " + detail.optString("roomNum", "-"));
+                            System.out.println("施設説明: " + detail.optString("hotelCaption", "-"));
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (!found) {
                     System.out.println("詳細情報が取得できませんでした。");
                 }
             } else {
